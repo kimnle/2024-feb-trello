@@ -30,3 +30,9 @@ def seed_tables():
             password=bcrypt.generate_password_hash("123456").decode("utf-8")
         )
     ]
+
+    db.session.add_all(users)
+
+    db.session.commit()
+
+    print("Tables seeded")
