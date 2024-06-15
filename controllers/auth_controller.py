@@ -1,4 +1,4 @@
-import datetime import timedelta
+from datetime import timedelta
 
 from flask import Blueprint, request
 from sqlalchemy.exc import IntegrityError
