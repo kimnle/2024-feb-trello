@@ -13,17 +13,8 @@ class Card(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
-class CardSchema(ma.Schema):
-
-    user = fields.Nested("UserSchema", only=["id", "name", "email"])
-
-    class Meta:
-        fields = ("id", "title", "description", "date", "status", "priority", "user_id")
-
-card_schema = CardSchema()
-cards_schema = CardSchema(many=True)
-
-user = db.relationship("User", back_populates="cards")
+    user = db.relationship("User", back_populates="cards")
+    comments = db.relationship("Comment", back_populates="card", cascade = "all, delete")
 
 # {
 #     id: 1,
@@ -37,3 +28,14 @@ user = db.relationship("User", back_populates="cards")
 #         name: "User 1",
 #         email: "user1@email.com"
 # }
+
+class CardSchema(ma.Schema):
+
+    user = fields.Nested("UserSchema", only=["id", "name", "email"])
+    comments = fields.List(fields.Nested("CommentSchema", exclude=["card"]))
+
+    class Meta:
+        fields = ("id", "title", "description", "date", "status", "priority", "user", "comments")
+
+card_schema = CardSchema()
+cards_schema = CardSchema(many=True)
