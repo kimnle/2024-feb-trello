@@ -81,7 +81,7 @@ def update_card(card_id):
     # get the card from the database
     stmt = db.select(Card).filter_by(id=card_id)
     card = db.session.scalar(stmt)
-    # if card
+    # if card exists
     if card:
         # update the fields as required
         card.title = body_data.get("title") or card.title
