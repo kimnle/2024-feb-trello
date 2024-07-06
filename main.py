@@ -23,6 +23,14 @@ def create_app():
     @app.errorhandler(ValidationError)
     def validation_error(err):
         return{"error": err.messages}, 400
+    
+    @app.errorhandler(400)
+    def bad_request(err):
+        return {"error": err.messages}, 400
+    
+    @app.errorhandler(401)
+    def unauthenticated():
+        return {"error": "You are not authenticated"}, 401
 
     from controllers.cli_controller import db_commands
     app.register_blueprint(db_commands)
